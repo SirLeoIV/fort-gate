@@ -1,0 +1,85 @@
+<div style="padding: 15px">
+  Connect to: <br>
+  <mat-radio-group aria-label="Connect to:" [(ngModel)]="customHost">
+    <mat-radio-button [value]=false>Online Server</mat-radio-button>
+    <mat-radio-button [value]=true>Custom Server</mat-radio-button>
+  </mat-radio-group>
+  <div *ngIf="customHost">
+    <mat-form-field>
+      <mat-label>Host</mat-label>
+      <input matInput [(ngModel)]="host">
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Port</mat-label>
+      <input matInput type="number" min="0" [(ngModel)]="port">
+    </mat-form-field>
+  </div>
+
+</div>
+<div>
+  <div>
+    <mat-form-field>
+      <mat-label>What do you want to do?</mat-label>
+      <mat-select [(ngModel)]="method">
+        <mat-option [value]="Method.CREATE">Create Client</mat-option>
+        <mat-option [value]="Method.GET">Watch Counter</mat-option>
+        <mat-option [value]="Method.NEW_ACTION">New Action</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div *ngIf="method == Method.GET || method == Method.NEW_ACTION">
+    <mat-form-field>
+      <mat-label>Client ID</mat-label>
+      <input matInput type="number" min="0" [(ngModel)]="id">
+    </mat-form-field>
+  </div>
+  <div>
+    <mat-form-field>
+      <mat-label>Password</mat-label>
+      <input matInput type="password" [(ngModel)]="password">
+    </mat-form-field>
+  </div>
+  <div *ngIf="method == Method.NEW_ACTION">
+    <mat-form-field>
+      <mat-label>Delay</mat-label>
+      <input matInput type="number" min="0" [(ngModel)]="delay">
+    </mat-form-field>
+  </div>
+  <div *ngIf="method == Method.NEW_ACTION">
+    <mat-form-field>
+      <mat-label>Increase</mat-label>
+      <input matInput type="number" min="0" [(ngModel)]="increase">
+    </mat-form-field>
+  </div>
+</div>
+<div>
+  <div>
+    <button mat-stroked-button (click)="submit()">Execute</button>
+  </div>
+  <div *ngIf="client" style="margin-top: 20px">
+    Active Client connection:<br>
+    ID: {{client.id}}<br>
+    Counter: {{client.counter}}<br>
+    Actions: <br>
+    <div style="width: 40%; margin: auto">
+      <table mat-table [dataSource]="client.actions!" style="width: 50%">
+
+        <!-- Position Column -->
+        <ng-container matColumnDef="delay">
+          <th mat-header-cell *matHeaderCellDef style="text-align: center">Delay</th>
+          <td mat-cell *matCellDef="let action" style="text-align: center"> {{action.delay}} </td>
+        </ng-container>
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="increment">
+          <th mat-header-cell *matHeaderCellDef style="text-align: center">Increment</th>
+          <td mat-cell *matCellDef="let action" style="text-align: center"> {{action.increase}} </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="['delay', 'increment']"></tr>
+        <tr mat-row *matRowDef="let row; columns: ['delay', 'increment'];"></tr>
+      </table>
+    </div>
+  </div>
+</div>
+<br>
