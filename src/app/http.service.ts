@@ -18,8 +18,10 @@ export class HttpService {
     return this.http.post(url + "/client", createClientDTO, {
       withCredentials: true, responseType: "text"}).pipe(
          catchError(error => {
-           // console.log(error)
-            this.$errorMessage.next(error.error);
+           console.log(error)
+           if (typeof error.error === 'string') {
+             this.$errorMessage.next(error.error);
+           }
             return [];
          })
       );
@@ -29,8 +31,10 @@ export class HttpService {
     return this.http.post<ClientDTO>(url + "/counter", getClientDTO, {
       withCredentials: true}).pipe(
         catchError(error => {
-          // console.log(error)
-          this.$errorMessage.next(error.error);
+          console.log(error)
+          if (typeof error.error === 'string') {
+            this.$errorMessage.next(error.error);
+          }
           return [];
         })
       );
@@ -40,8 +44,10 @@ export class HttpService {
     return this.http.post<ClientDTO>(url + "/action", addActionDTO, {
       withCredentials: true}).pipe(
         catchError(error => {
-          // console.log(error)
-          this.$errorMessage.next(error.error);
+          console.log(error)
+          if (typeof error.error === 'string') {
+            this.$errorMessage.next(error.error);
+          }
           return [];
         })
       );

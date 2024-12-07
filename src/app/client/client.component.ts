@@ -74,7 +74,7 @@ export class ClientComponent {
 
   changeDelay(event: Event) {
     const inputElement = event.target as HTMLInputElement;
-    const parsedValue = Math.min(parseInt(inputElement.value, 10), 2000);
+    const parsedValue = Math.max(Math.min(parseInt(inputElement.value, 10), 2000), 0);
 
     if (!isNaN(parsedValue)) {
       this.delay = parsedValue;
@@ -86,7 +86,7 @@ export class ClientComponent {
 
   changeIncrease($event: Event) {
     const inputElement = $event.target as HTMLInputElement;
-    const parsedValue = Math.min(parseInt(inputElement.value, 10), 2000);
+    const parsedValue = Math.max(Math.min(parseInt(inputElement.value, 10), 2000), -2000);
 
     if (!isNaN(parsedValue)) {
       this.increase = parsedValue;
@@ -94,5 +94,23 @@ export class ClientComponent {
       this.increase = 0; // Handle invalid cases if necessary
     }
     inputElement.value = this.increase.toString(); // Ensure the displayed value matches the model
+  }
+
+  canSubmit(): boolean {
+    if (this.method == Method.CREATE || this.method == Method.GET) {
+      return this.name != undefined
+        && this.name.length >= 3 && this.name.length <= 25
+        && this.password != undefined
+        && this.password.length >= 3 && this.password.length <= 25;
+    }
+    if (this.method == Method.NEW_ACTION) {
+      return this.name != undefined
+        && this.name.length >= 3 && this.name.length <= 25
+        && this.password != undefined
+        && this.password.length >= 3 && this.password.length <= 25
+        && this.increase >= -2000 && this.delay >= 0
+        && this.increase <= 2000 && this.delay <= 2000;
+    }
+    return false;
   }
 }

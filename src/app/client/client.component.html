@@ -54,7 +54,7 @@
 </div>
 <div>
   <div>
-    <button mat-stroked-button (click)="submit()">Execute</button>
+    <button mat-stroked-button (click)="submit()" [disabled]="!canSubmit()">Execute</button>
   </div>
   <div *ngIf="errorMessage != ''" style="margin: 20px; color: darkred">
     {{ errorMessage }}
