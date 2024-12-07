@@ -27,28 +27,28 @@
       </mat-select>
     </mat-form-field>
   </div>
-  <div *ngIf="method == Method.GET || method == Method.NEW_ACTION">
+  <div>
     <mat-form-field>
       <mat-label>Client ID</mat-label>
-      <input matInput type="number" min="0" [(ngModel)]="id">
+      <input matInput type="string" min="0" [(ngModel)]="name" maxlength="25">
     </mat-form-field>
   </div>
   <div>
     <mat-form-field>
       <mat-label>Password</mat-label>
-      <input matInput type="password" [(ngModel)]="password">
+      <input matInput type="password" [(ngModel)]="password" maxlength="25">
     </mat-form-field>
   </div>
   <div *ngIf="method == Method.NEW_ACTION">
     <mat-form-field>
       <mat-label>Delay</mat-label>
-      <input matInput type="number" min="0" [(ngModel)]="delay">
+      <input matInput type="number" min="0" [(ngModel)]="delay" (input)="changeDelay($event)">
     </mat-form-field>
   </div>
   <div *ngIf="method == Method.NEW_ACTION">
     <mat-form-field>
       <mat-label>Increase</mat-label>
-      <input matInput type="number" min="0" [(ngModel)]="increase">
+      <input matInput type="number" step="1" [(ngModel)]="increase" (input)="changeIncrease($event)">
     </mat-form-field>
   </div>
 </div>
@@ -56,9 +56,15 @@
   <div>
     <button mat-stroked-button (click)="submit()">Execute</button>
   </div>
+  <div *ngIf="errorMessage != ''" style="margin: 20px; color: darkred">
+    {{ errorMessage }}
+  </div>
+  <div *ngIf="successMessage != ''" style="margin: 20px; color: darkgreen">
+    {{ successMessage }}
+  </div>
   <div *ngIf="client" style="margin-top: 20px">
     Active Client connection:<br>
-    ID: {{client.id}}<br>
+    ID: {{client.name}}<br>
     Counter: {{client.counter}}<br>
     Actions: <br>
     <div style="width: 40%; margin: auto">
